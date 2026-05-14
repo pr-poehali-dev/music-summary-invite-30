@@ -144,7 +144,7 @@ const Index = () => {
         </div>
 
         {!revealed ? (
-          <button className="reveal-btn" onClick={handleReveal}>
+          <button className="reveal-btn" onClick={() => setRevealed(true)}>
             <span className="btn-icon">▶</span>
             Смотреть итоги
           </button>

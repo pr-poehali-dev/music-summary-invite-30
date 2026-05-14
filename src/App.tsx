@@ -10,7 +10,6 @@ import Moments from "./pages/Moments";
 import Stats from "./pages/Stats";
 import Party from "./pages/Party";
 import NotFound from "./pages/NotFound";
-import { AudioProvider } from "./context/AudioContext";
 
 const queryClient = new QueryClient();
 
@@ -19,19 +18,17 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <AudioProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/track" element={<Track />} />
-            <Route path="/moments" element={<Moments />} />
-            <Route path="/stats" element={<Stats />} />
-            <Route path="/party" element={<Party />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </AudioProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/track" element={<Track />} />
+          <Route path="/moments" element={<Moments />} />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/party" element={<Party />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );

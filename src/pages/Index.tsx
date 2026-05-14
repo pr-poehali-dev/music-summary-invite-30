@@ -4,48 +4,30 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [leaving, setLeaving] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const startMusic = () => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || isPlaying) return;
     audio.volume = 0.6;
     audio.loop = true;
-
-    const tryPlay = () => {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
-    };
-
-    const handleInteraction = () => {
-      tryPlay();
-      document.removeEventListener("pointerdown", handleInteraction);
-    };
-
-    tryPlay();
-    document.addEventListener("pointerdown", handleInteraction);
-
-    return () => {
-      document.removeEventListener("pointerdown", handleInteraction);
-    };
-  }, []);
+    audio.play().then(() => setIsPlaying(true)).catch(() => {});
+  };
 
   const handleReveal = () => {
     const audio = audioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-    navigate("/track");
+    setLeaving(true);
+    setTimeout(() => {
+      if (audio) { audio.pause(); audio.currentTime = 0; }
+      navigate("/track");
+    }, 500);
   };
 
   return (
-    <div className="spotify-page">
-      <div className="bg-stripes">
-        <div className="stripe stripe-1" />
-        <div className="stripe stripe-2" />
-        <div className="stripe stripe-3" />
-        <div className="stripe stripe-4" />
-        <div className="stripe stripe-5" />
+    <div className={`spotify-page page-enter ${leaving ? "page-exit" : ""}`}>
+      <div className="bg-stripes-animated">
+        {[1,2,3,4,5,6].map(i => <div key={i} className={`stripe-anim stripe-anim-${i}`} />)}
       </div>
 
       <audio ref={audioRef} src="https://files.catbox.moe/ldrhts.mp3" preload="auto" />
@@ -76,21 +58,22 @@ const Index = () => {
           </div>
         </div>
 
-        <button className="reveal-btn" onClick={handleReveal}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          Смотреть итоги
-        </button>
-
-        {isPlaying && (
-          <div className="music-bar">
-            <div className="bar" />
-            <div className="bar" />
-            <div className="bar" />
-            <div className="bar" />
-            <div className="bar" />
-            <span className="music-label">играет для тебя</span>
+        {!isPlaying ? (
+          <button className="tap-music-btn" onClick={startMusic}>
+            <span className="tap-music-icon">▶</span>
+            Нажми сюда
+          </button>
+        ) : (
+          <div className="music-playing-block">
+            <div className="music-bar">
+              <div className="bar" /><div className="bar" /><div className="bar" />
+              <div className="bar" /><div className="bar" />
+              <span className="music-label">играет для тебя</span>
+            </div>
+            <button className="reveal-btn" onClick={handleReveal}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Смотреть итоги
+            </button>
           </div>
         )}
       </div>

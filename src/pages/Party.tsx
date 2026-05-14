@@ -16,40 +16,27 @@ const Party = () => {
     if (!audio) return;
     audio.volume = 0.7;
     audio.loop = true;
-
-    const tryPlay = () => {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
-    };
-    const handleInteraction = () => {
-      tryPlay();
-      document.removeEventListener("pointerdown", handleInteraction);
-    };
+    const tryPlay = () => audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    const handleInteraction = () => { tryPlay(); document.removeEventListener("pointerdown", handleInteraction); };
     tryPlay();
     document.addEventListener("pointerdown", handleInteraction);
-
-    setTimeout(() => setVisible(true), 100);
-
+    setTimeout(() => setVisible(true), 80);
     return () => document.removeEventListener("pointerdown", handleInteraction);
   }, []);
 
   return (
-    <div className="spotify-page party-page">
+    <div className={`spotify-page party-page page-enter`}>
       <div className="party-bg-glow party-glow-1" />
       <div className="party-bg-glow party-glow-2" />
       <div className="party-bg-glow party-glow-3" />
 
-      <div className="bg-stripes">
-        <div className="stripe stripe-1" />
-        <div className="stripe stripe-2" />
-        <div className="stripe stripe-3" />
-        <div className="stripe stripe-4" />
-        <div className="stripe stripe-5" />
+      <div className="bg-stripes-animated">
+        {[1,2,3,4,5,6].map(i => <div key={i} className={`stripe-anim stripe-anim-${i}`} />)}
       </div>
 
       <audio ref={audioRef} src="https://files.catbox.moe/trc7we.mp3" preload="auto" />
 
       <div className={`content-wrapper party-content ${visible ? "party-visible" : "party-hidden"}`}>
-
         <div className="wrapped-header">
           <div className="wrapped-logo">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954">
@@ -60,7 +47,6 @@ const Party = () => {
           <div className="wrapped-tag" style={{ background: "linear-gradient(135deg, #FF6B6B, #F7C948)" }}>27 июня</div>
         </div>
 
-        {/* Hero */}
         <div className="party-hero">
           <p className="party-waiting">жду тебя</p>
           <div className="party-date-block">
@@ -69,7 +55,6 @@ const Party = () => {
           </div>
         </div>
 
-        {/* Адрес */}
         <div className="party-address-card">
           <div className="party-address-icon">📍</div>
           <div className="party-address-text">
@@ -79,7 +64,6 @@ const Party = () => {
           </div>
         </div>
 
-        {/* Программа */}
         <div className="party-schedule">
           <p className="party-schedule-title">✦ что тебя ждёт ✦</p>
           <div className="party-schedule-list">
@@ -94,14 +78,20 @@ const Party = () => {
 
         {isPlaying && (
           <div className="music-bar">
-            <div className="bar" />
-            <div className="bar" />
-            <div className="bar" />
-            <div className="bar" />
-            <div className="bar" />
+            <div className="bar" /><div className="bar" /><div className="bar" />
+            <div className="bar" /><div className="bar" />
             <span className="music-label">играет для тебя</span>
           </div>
         )}
+
+        <a
+          href="https://docs.google.com/spreadsheets/d/1Ku3rdanulnFMoDGRRYnycAnj4sJThtFrm7mCLC-oufE/edit?gid=0#gid=0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="wishlist-btn"
+        >
+          🎁 Wishlist
+        </a>
       </div>
     </div>
   );

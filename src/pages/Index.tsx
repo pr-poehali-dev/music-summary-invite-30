@@ -1,41 +1,10 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-
-interface Cake {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-  speed: number;
-  rotation: number;
-  rotationSpeed: number;
-  emoji: string;
-}
-
-const EMOJIS = ["🎂", "🎂", "🎂", "🎉", "🎈", "✨", "🎁", "🍰", "🎊", "🥂"];
-let cakeIdCounter = 0;
-
-const makeCake = (startY = -80): Cake => {
-  cakeIdCounter += 1;
-  return {
-    id: cakeIdCounter,
-    x: Math.random() * 95,
-    y: startY,
-    size: 24 + Math.random() * 32,
-    speed: 1.5 + Math.random() * 3,
-    rotation: Math.random() * 360,
-    rotationSpeed: (Math.random() - 0.5) * 4,
-    emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
-  };
-};
-
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [revealed, setRevealed] = useState(false);
-  const [cakes, setCakes] = useState<Cake[]>([]);
-  const revealedRef = useRef(false);
-  const rafRef = useRef<number>(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -47,58 +16,30 @@ const Index = () => {
       audio.play().then(() => setIsPlaying(true)).catch(() => {});
     };
 
-    tryPlay();
-
     const handleInteraction = () => {
       tryPlay();
-      document.removeEventListener("click", handleInteraction);
-      document.removeEventListener("touchstart", handleInteraction);
+      document.removeEventListener("pointerdown", handleInteraction);
     };
 
-    document.addEventListener("click", handleInteraction);
-    document.addEventListener("touchstart", handleInteraction);
+    tryPlay();
+    document.addEventListener("pointerdown", handleInteraction);
 
     return () => {
-      document.removeEventListener("click", handleInteraction);
-      document.removeEventListener("touchstart", handleInteraction);
+      document.removeEventListener("pointerdown", handleInteraction);
     };
   }, []);
 
-  const animate = useCallback(() => {
-    if (!revealedRef.current) return;
-    setCakes((prev) =>
-      prev.map((c) => ({ ...c, y: c.y + c.speed * 0.4 })).filter((c) => c.y < 115)
-    );
-    rafRef.current = requestAnimationFrame(animate);
-  }, []);
-
-  useEffect(() => {
-    if (!revealed) return;
-    revealedRef.current = true;
-
+  const handleReveal = () => {
     const audio = audioRef.current;
     if (audio) {
       audio.pause();
-      setIsPlaying(false);
+      audio.currentTime = 0;
     }
-
-    setCakes(Array.from({ length: 22 }, (_, i) => makeCake(-Math.random() * 120 - i * 8)));
-    rafRef.current = requestAnimationFrame(animate);
-
-    const spawnInterval = setInterval(() => {
-      setCakes((prev) => [...prev, makeCake(-60)]);
-    }, 400);
-
-    return () => {
-      clearInterval(spawnInterval);
-      cancelAnimationFrame(rafRef.current);
-      revealedRef.current = false;
-    };
-  }, [revealed, animate]);
+    navigate("/track");
+  };
 
   return (
     <div className="spotify-page">
-      {/* Цветные диагональные полоски фона */}
       <div className="bg-stripes">
         <div className="stripe stripe-1" />
         <div className="stripe stripe-2" />
@@ -107,29 +48,9 @@ const Index = () => {
         <div className="stripe stripe-5" />
       </div>
 
-      {revealed && (
-        <div className="cakes-container">
-          {cakes.map((cake) => (
-            <span
-              key={cake.id}
-              className="falling-cake"
-              style={{
-                left: `${cake.x}%`,
-                top: `${cake.y}%`,
-                fontSize: `${cake.size}px`,
-                transform: `rotate(${cake.rotation + cake.rotationSpeed * cake.y}deg)`,
-              }}
-            >
-              {cake.emoji}
-            </span>
-          ))}
-        </div>
-      )}
-
       <audio ref={audioRef} src="https://files.catbox.moe/ldrhts.mp3" preload="auto" />
 
       <div className="content-wrapper">
-        {/* Шапка как в Spotify Wrapped */}
         <div className="wrapped-header">
           <div className="wrapped-logo">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954">
@@ -141,7 +62,6 @@ const Index = () => {
         </div>
 
         <div className="main-content">
-          {/* Приветствие */}
           <div className="headline-block">
             <p className="greeting-sub">привет,</p>
             <h1 className="name-big">Гулять</h1>
@@ -150,28 +70,20 @@ const Index = () => {
 
           <div className="divider-line" />
 
-          {/* Блок приглашения */}
           <div className="invite-block">
             <p className="invite-label">не просто музыкальные итоги</p>
             <h2 className="invite-title">а приглашение<br />отметить мои <em>30</em></h2>
           </div>
         </div>
 
-        {!revealed ? (
-          <button className="reveal-btn" onClick={() => setRevealed(true)}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-            Смотреть итоги
-          </button>
-        ) : (
-          <div className="revealed-msg">
-            <span className="big-emoji">🎂</span>
-            <p>С днём рождения!</p>
-          </div>
-        )}
+        <button className="reveal-btn" onClick={handleReveal}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          Смотреть итоги
+        </button>
 
-        {isPlaying && !revealed && (
+        {isPlaying && (
           <div className="music-bar">
             <div className="bar" />
             <div className="bar" />

@@ -109,7 +109,7 @@ const Moments = () => {
       audio.currentTime = 0;
     }
     activeRef.current = false;
-    navigate("/party");
+    navigate("/stats");
   };
 
   return (

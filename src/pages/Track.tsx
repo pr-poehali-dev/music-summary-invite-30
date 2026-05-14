@@ -44,7 +44,7 @@ const Track = () => {
       audio.pause();
       audio.currentTime = 0;
     }
-    navigate("/party");
+    navigate("/moments");
   };
 
   const togglePlay = () => {

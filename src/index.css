@@ -513,6 +513,59 @@
   }
 }
 
+/* Fireworks */
+.fireworks-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Moments page */
+.moments-icon {
+  font-size: 52px;
+  line-height: 1;
+  animation: bounceIn 0.7s ease both;
+}
+.moments-title {
+  color: #fff;
+  font-size: clamp(36px, 9vw, 60px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  margin: 0;
+  background: linear-gradient(90deg, #fff 30%, #f7c948);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInUp 0.6s ease both;
+}
+.moments-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeInUp 0.7s 0.15s ease both;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+.moments-text p {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.75;
+  margin: 0;
+  font-style: italic;
+}
+.moments-thanks {
+  color: #1db954 !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  letter-spacing: 0.5px;
+}
+
 /* Falling cakes */
 .cakes-container {
   position: fixed;

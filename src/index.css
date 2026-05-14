@@ -578,6 +578,190 @@
   text-align: center;
 }
 
+/* Party page */
+.party-page {
+  background: #080808;
+}
+.party-bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+.party-glow-1 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(
+    circle,
+    rgba(247, 201, 72, 0.12) 0%,
+    transparent 70%
+  );
+  top: -80px;
+  left: -80px;
+}
+.party-glow-2 {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 107, 107, 0.1) 0%,
+    transparent 70%
+  );
+  bottom: -60px;
+  right: -60px;
+}
+.party-glow-3 {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(
+    circle,
+    rgba(29, 185, 84, 0.08) 0%,
+    transparent 70%
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.party-content {
+  gap: 28px;
+  max-width: 500px;
+}
+.party-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.party-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+.party-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.party-waiting {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+}
+.party-date-block {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.party-date {
+  font-size: clamp(44px, 11vw, 72px);
+  font-weight: 900;
+  letter-spacing: -3px;
+  line-height: 1;
+  background: linear-gradient(135deg, #f7c948 0%, #ff6b6b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.party-time {
+  font-size: clamp(20px, 5vw, 32px);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: -1px;
+}
+.party-address-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(247, 201, 72, 0.07);
+  border: 1px solid rgba(247, 201, 72, 0.2);
+  border-radius: 18px;
+  padding: 20px;
+  width: 100%;
+  text-align: left;
+}
+.party-address-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.party-address-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.party-address-main {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+.party-address-sub {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.5;
+}
+.party-address-phone {
+  color: #f7c948;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 4px 0 0;
+}
+.party-schedule {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.party-schedule-title {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+}
+.party-schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.party-schedule-item {
+  display: flex;
+  gap: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  align-items: flex-start;
+}
+.party-schedule-item:last-child {
+  border-bottom: none;
+}
+.party-schedule-time {
+  color: #f7c948;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  min-width: 132px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.party-schedule-desc {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
 /* Fireworks */
 .fireworks-canvas {
   position: fixed;

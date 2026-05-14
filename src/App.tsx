@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Track from "./pages/Track";
 import Moments from "./pages/Moments";
 import Stats from "./pages/Stats";
+import Party from "./pages/Party";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/track" element={<Track />} />
           <Route path="/moments" element={<Moments />} />
           <Route path="/stats" element={<Stats />} />
+          <Route path="/party" element={<Party />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

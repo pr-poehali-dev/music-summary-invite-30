@@ -99,3 +99,317 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ===== SPOTIFY INVITE PAGE ===== */
+
+.spotify-page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-glow-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(29, 185, 84, 0.15) 0%,
+    transparent 70%
+  );
+  top: -100px;
+  left: -100px;
+}
+.bg-glow-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(29, 185, 84, 0.08) 0%,
+    transparent 70%
+  );
+  bottom: -80px;
+  right: -80px;
+}
+.bg-glow-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 200, 50, 0.06) 0%,
+    transparent 70%
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 48px 32px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+}
+
+.top-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.year-badge {
+  background: #1db954;
+  color: #000;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.top-text {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.headline-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.greeting-sub {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: lowercase;
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+}
+.name-big {
+  color: #ffffff;
+  font-size: clamp(56px, 12vw, 88px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin: 4px 0;
+  background: linear-gradient(135deg, #ffffff 0%, #1db954 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.divider-line {
+  width: 48px;
+  height: 1px;
+  background: rgba(29, 185, 84, 0.4);
+}
+
+.invite-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.invite-label {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0;
+}
+.invite-title {
+  color: #ffffff;
+  font-size: clamp(32px, 8vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin: 0;
+}
+.invite-title em {
+  font-style: normal;
+  color: #1db954;
+}
+.invite-desc {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.7;
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 17px;
+}
+
+.reveal-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1db954;
+  color: #000;
+  border: none;
+  border-radius: 500px;
+  padding: 18px 40px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 32px rgba(29, 185, 84, 0.35);
+}
+.reveal-btn:hover {
+  background: #1ed760;
+  transform: scale(1.04);
+  box-shadow: 0 12px 40px rgba(29, 185, 84, 0.5);
+}
+.reveal-btn:active {
+  transform: scale(0.98);
+}
+.btn-icon {
+  font-size: 12px;
+}
+
+.revealed-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fadeInUp 0.6s ease both;
+}
+.revealed-msg .big-emoji {
+  font-size: 56px;
+  display: block;
+  animation: bounceIn 0.6s ease both;
+}
+.revealed-msg p {
+  color: #1db954;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* Music bars */
+.music-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 24px;
+}
+.music-bar .bar {
+  width: 3px;
+  background: #1db954;
+  border-radius: 2px;
+  animation: musicBar 0.8s ease-in-out infinite;
+}
+.music-bar .bar:nth-child(1) {
+  animation-delay: 0s;
+  height: 8px;
+}
+.music-bar .bar:nth-child(2) {
+  animation-delay: 0.15s;
+  height: 16px;
+}
+.music-bar .bar:nth-child(3) {
+  animation-delay: 0.3s;
+  height: 24px;
+}
+.music-bar .bar:nth-child(4) {
+  animation-delay: 0.15s;
+  height: 14px;
+}
+.music-bar .bar:nth-child(5) {
+  animation-delay: 0.05s;
+  height: 6px;
+}
+.music-label {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-left: 10px;
+  align-self: center;
+}
+
+/* Falling cakes */
+.cakes-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+.falling-cake {
+  position: absolute;
+  display: block;
+  user-select: none;
+  will-change: transform, top;
+}
+
+/* Keyframes */
+@keyframes musicBar {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}

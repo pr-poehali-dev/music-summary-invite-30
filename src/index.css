@@ -285,10 +285,10 @@
 }
 .invite-title {
   color: #ffffff;
-  font-size: clamp(32px, 8vw, 52px);
-  font-weight: 700;
+  font-size: clamp(38px, 10vw, 64px);
+  font-weight: 800;
   line-height: 1.1;
-  letter-spacing: -1px;
+  letter-spacing: -2px;
   margin: 0;
 }
 .invite-title em {

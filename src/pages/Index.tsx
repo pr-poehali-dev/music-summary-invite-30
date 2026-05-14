@@ -28,12 +28,6 @@ const makeCake = (startY = -80): Cake => {
   };
 };
 
-const STATS = [
-  { label: "минут прослушано", value: "87 432", color: "#1DB954" },
-  { label: "любимых треков", value: "312", color: "#FF6B6B" },
-  { label: "любимый жанр", value: "Rap", color: "#F7C948" },
-  { label: "стран в плейлисте", value: "18", color: "#7B61FF" },
-];
 
 const Index = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -158,22 +152,8 @@ const Index = () => {
 
           {/* Блок приглашения */}
           <div className="invite-block">
-            <p className="invite-label">✦ специальное приглашение ✦</p>
-            <h2 className="invite-title">Отметить<br />мои <em>30</em></h2>
-            <p className="invite-desc">
-              Год пройден. Тридцать лет — это не просто цифра.<br />
-              Это повод собраться и сделать что-то незабываемое.
-            </p>
-          </div>
-
-          {/* Статистика в стиле Wrapped */}
-          <div className="stats-grid">
-            {STATS.map((s) => (
-              <div className="stat-card" key={s.label} style={{ borderColor: s.color + "40" }}>
-                <span className="stat-value" style={{ color: s.color }}>{s.value}</span>
-                <span className="stat-label">{s.label}</span>
-              </div>
-            ))}
+            <p className="invite-label">не просто музыкальные итоги</p>
+            <h2 className="invite-title">а приглашение<br />отметить мои <em>30</em></h2>
           </div>
         </div>
 

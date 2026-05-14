@@ -1,27 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAudio } from "@/context/AudioContext";
+
+const SRC = "https://files.catbox.moe/ldrhts.mp3";
 
 const Index = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { start, isPlaying } = useAudio();
   const [leaving, setLeaving] = useState(false);
   const navigate = useNavigate();
 
   const startMusic = () => {
-    const audio = audioRef.current;
-    if (!audio || isPlaying) return;
-    audio.volume = 0.6;
-    audio.loop = true;
-    audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    start(SRC);
   };
 
   const handleReveal = () => {
-    const audio = audioRef.current;
     setLeaving(true);
-    setTimeout(() => {
-      if (audio) { audio.pause(); audio.currentTime = 0; }
-      navigate("/track");
-    }, 500);
+    setTimeout(() => navigate("/track"), 500);
   };
 
   return (
@@ -29,8 +23,6 @@ const Index = () => {
       <div className="bg-stripes-animated">
         {[1,2,3,4,5,6].map(i => <div key={i} className={`stripe-anim stripe-anim-${i}`} />)}
       </div>
-
-      <audio ref={audioRef} src="https://files.catbox.moe/ldrhts.mp3" preload="auto" />
 
       <div className="content-wrapper">
         <div className="wrapped-header">

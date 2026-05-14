@@ -1,31 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAudio } from "@/context/AudioContext";
+
+const SRC = "https://files.catbox.moe/re1vms.mp3";
 
 const Moments = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { changeSrc, isPlaying } = useAudio();
   const [leaving, setLeaving] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = 0.7;
-    audio.loop = true;
-    const tryPlay = () => audio.play().then(() => setIsPlaying(true)).catch(() => {});
-    const handleInteraction = () => { tryPlay(); document.removeEventListener("pointerdown", handleInteraction); };
-    tryPlay();
-    document.addEventListener("pointerdown", handleInteraction);
-    return () => document.removeEventListener("pointerdown", handleInteraction);
-  }, []);
+    changeSrc(SRC);
+  }, [changeSrc]);
 
   const handleNext = () => {
-    const audio = audioRef.current;
     setLeaving(true);
-    setTimeout(() => {
-      if (audio) { audio.pause(); audio.currentTime = 0; }
-      navigate("/stats");
-    }, 500);
+    setTimeout(() => navigate("/stats"), 500);
   };
 
   return (
@@ -34,14 +24,11 @@ const Moments = () => {
         {[1,2,3,4,5,6].map(i => <div key={i} className={`stripe-anim stripe-anim-${i}`} />)}
       </div>
 
-      {/* Летящие полосы вместо салютов */}
       <div className="burst-stripes">
         {Array.from({length: 12}, (_, i) => (
           <div key={i} className={`burst-stripe burst-stripe-${i+1}`} />
         ))}
       </div>
-
-      <audio ref={audioRef} src="https://files.catbox.moe/re1vms.mp3" preload="auto" />
 
       <div className="content-wrapper">
         <div className="wrapped-header">

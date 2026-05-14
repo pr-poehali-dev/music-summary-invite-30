@@ -1,86 +1,43 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAudio } from "@/context/AudioContext";
+
+const SRC = "https://files.catbox.moe/3ku0qd.mp3";
 
 const STATS = [
-  {
-    label: "Сколько мы дружим",
-    value: "2 649",
-    unit: "дней",
-    color: "#1DB954",
-    delay: 0,
-  },
-  {
-    label: "Сколько раз ты была на моём дне рождения",
-    value: "6",
-    unit: "раз",
-    color: "#F7C948",
-    delay: 150,
-  },
-  {
-    label: "Как сильно я дорожу тобой",
-    value: "∞",
-    unit: "от луны и обратно",
-    color: "#FF6B6B",
-    delay: 300,
-  },
+  { label: "Сколько мы дружим", value: "2 649", unit: "дней", color: "#1DB954", delay: 0 },
+  { label: "Сколько раз ты была на моём дне рождения", value: "6", unit: "раз", color: "#F7C948", delay: 150 },
+  { label: "Как сильно я дорожу тобой", value: "∞", unit: "от луны и обратно", color: "#FF6B6B", delay: 300 },
 ];
 
 const Stats = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { changeSrc, isPlaying } = useAudio();
   const [visible, setVisible] = useState([false, false, false]);
+  const [leaving, setLeaving] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = 0.7;
-    audio.loop = true;
-
-    const tryPlay = () => {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
-    };
-    const handleInteraction = () => {
-      tryPlay();
-      document.removeEventListener("pointerdown", handleInteraction);
-    };
-    tryPlay();
-    document.addEventListener("pointerdown", handleInteraction);
-    return () => document.removeEventListener("pointerdown", handleInteraction);
-  }, []);
+    changeSrc(SRC);
+  }, [changeSrc]);
 
   useEffect(() => {
     STATS.forEach((s, i) => {
       setTimeout(() => {
-        setVisible((prev) => {
-          const next = [...prev];
-          next[i] = true;
-          return next;
-        });
+        setVisible((prev) => { const next = [...prev]; next[i] = true; return next; });
       }, 200 + s.delay);
     });
   }, []);
 
   const handleNext = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-    navigate("/party");
+    setLeaving(true);
+    setTimeout(() => navigate("/party"), 500);
   };
 
   return (
-    <div className="spotify-page">
-      <div className="bg-stripes">
-        <div className="stripe stripe-1" />
-        <div className="stripe stripe-2" />
-        <div className="stripe stripe-3" />
-        <div className="stripe stripe-4" />
-        <div className="stripe stripe-5" />
+    <div className={`spotify-page page-enter ${leaving ? "page-exit" : ""}`}>
+      <div className="bg-stripes-animated">
+        {[1,2,3,4,5,6].map(i => <div key={i} className={`stripe-anim stripe-anim-${i}`} />)}
       </div>
-
-      <audio ref={audioRef} src="https://files.catbox.moe/3ku0qd.mp3" preload="auto" />
 
       <div className="content-wrapper">
         <div className="wrapped-header">
@@ -121,11 +78,8 @@ const Stats = () => {
 
           {isPlaying && (
             <div className="music-bar">
-              <div className="bar" />
-              <div className="bar" />
-              <div className="bar" />
-              <div className="bar" />
-              <div className="bar" />
+              <div className="bar" /><div className="bar" /><div className="bar" />
+              <div className="bar" /><div className="bar" />
               <span className="music-label">трек, который с тобой ассоциируется</span>
             </div>
           )}

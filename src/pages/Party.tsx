@@ -1,4 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useAudio } from "@/context/AudioContext";
+
+const SRC = "https://files.catbox.moe/trc7we.mp3";
 
 const SCHEDULE = [
   { time: "17:30 – 18:30", desc: "Сбор, лёгкий перекус, первые тосты" },
@@ -7,25 +10,16 @@ const SCHEDULE = [
 ];
 
 const Party = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { changeSrc, isPlaying } = useAudio();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = 0.7;
-    audio.loop = true;
-    const tryPlay = () => audio.play().then(() => setIsPlaying(true)).catch(() => {});
-    const handleInteraction = () => { tryPlay(); document.removeEventListener("pointerdown", handleInteraction); };
-    tryPlay();
-    document.addEventListener("pointerdown", handleInteraction);
+    changeSrc(SRC);
     setTimeout(() => setVisible(true), 80);
-    return () => document.removeEventListener("pointerdown", handleInteraction);
-  }, []);
+  }, [changeSrc]);
 
   return (
-    <div className={`spotify-page party-page page-enter`}>
+    <div className="spotify-page party-page page-enter">
       <div className="party-bg-glow party-glow-1" />
       <div className="party-bg-glow party-glow-2" />
       <div className="party-bg-glow party-glow-3" />
@@ -33,8 +27,6 @@ const Party = () => {
       <div className="bg-stripes-animated">
         {[1,2,3,4,5,6].map(i => <div key={i} className={`stripe-anim stripe-anim-${i}`} />)}
       </div>
-
-      <audio ref={audioRef} src="https://files.catbox.moe/trc7we.mp3" preload="auto" />
 
       <div className={`content-wrapper party-content ${visible ? "party-visible" : "party-hidden"}`}>
         <div className="wrapped-header">

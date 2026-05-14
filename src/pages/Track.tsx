@@ -1,74 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAudio } from "@/context/AudioContext";
+
+const SRC = "https://files.catbox.moe/1sll88.mp3";
 
 const Track = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const { changeSrc, isPlaying, toggle, progress } = useAudio();
+  const [leaving, setLeaving] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = 0.7;
-    audio.loop = true;
-
-    const tryPlay = () => {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
-    };
-
-    const handleInteraction = () => {
-      tryPlay();
-      document.removeEventListener("pointerdown", handleInteraction);
-    };
-
-    tryPlay();
-    document.addEventListener("pointerdown", handleInteraction);
-
-    const onTimeUpdate = () => {
-      if (audio.duration) {
-        setProgress((audio.currentTime / audio.duration) * 100);
-      }
-    };
-    audio.addEventListener("timeupdate", onTimeUpdate);
-
-    return () => {
-      document.removeEventListener("pointerdown", handleInteraction);
-      audio.removeEventListener("timeupdate", onTimeUpdate);
-    };
-  }, []);
+    changeSrc(SRC);
+  }, [changeSrc]);
 
   const handleNext = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-    navigate("/moments");
-  };
-
-  const togglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
-    }
+    setLeaving(true);
+    setTimeout(() => navigate("/moments"), 500);
   };
 
   return (
-    <div className="spotify-page">
-      <div className="bg-stripes">
-        <div className="stripe stripe-1" />
-        <div className="stripe stripe-2" />
-        <div className="stripe stripe-3" />
-        <div className="stripe stripe-4" />
-        <div className="stripe stripe-5" />
+    <div className={`spotify-page page-enter ${leaving ? "page-exit" : ""}`}>
+      <div className="bg-stripes-animated">
+        {[1,2,3,4,5,6].map(i => <div key={i} className={`stripe-anim stripe-anim-${i}`} />)}
       </div>
-
-      <audio ref={audioRef} src="https://files.catbox.moe/1sll88.mp3" preload="auto" />
 
       <div className="content-wrapper">
         <div className="wrapped-header">
@@ -82,7 +36,7 @@ const Track = () => {
         </div>
 
         <div className="main-content">
-          <div className="track-cover" onClick={togglePlay}>
+          <div className="track-cover" onClick={toggle}>
             <div className="track-cover-inner">
               <div className={`track-vinyl ${isPlaying ? "spinning" : ""}`}>
                 <div className="vinyl-center" />
